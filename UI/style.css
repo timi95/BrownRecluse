@@ -1,0 +1,27 @@
+.search {
+    display: flex;
+    justify-content: center;
+    align-items:  center;
+}
+
+.map {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.box{
+    background-color: rgba(244, 240, 225, 0.067);
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 15px;
+    list-style: none;
+}
+
+
+.box > li{
+    
+    list-style: square;
+}

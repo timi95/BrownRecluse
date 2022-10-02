@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brown Recluse</title>
+</head>
+<body>
+    <div>
+        <a href="page2.html">Page 2</a>
+    </div>
+
+    <main>
+        <div id="content"></div>
+    </main>
+
+</body>
+
+<script>
+
+    const ref = Vue.ref
+
+    function useFetch(para) {
+        const data = ref(null)
+        const error = ref(null)
+
+        fetch(`http://localhost:3000/crawl?url=${para}`)
+            .then((res) => res.json())
+            .then((json) => (data.value = json))
+            .catch((err) => (error.value = err))
+
+        return { data, error }
+    }
+
+    /*Vue 3*/
+    Vue.createApp({
+        data() { return { 
+            message: 'Row', 
+            text: 'Empty Text',
+            items: []
+        }},
+        methods: {
+            async search(para){
+                // const { data, error } = useFetch(para)
+                const data = await fetch(`http://localhost:3000/crawl?url=${para}`)
+                .then((res) => res.json())
+                .then((json) => json)
+
+                if(!!data) {
+                    this.items = data.siteMap
+                    console.log( data.siteMap ) 
+                } else { console.error(error) }
+            },
+            async searchChildren(item){
+                const data = await fetch(`http://localhost:3000/crawl?url=${item.page}`)
+                .then((res) => res.json())
+                .then((json) => json)
+
+                if(!!data) {
+                    this.items.push(data.siteMap)
+                    console.log( data.siteMap ) 
+                } else { console.error(error) }
+            },
+            displayItems(){
+                return data().items
+            }
+        },
+        template: `
+        <div class="search">
+            <h1>Crawl Url</h1><br>
+            <input v-model="text">
+            <button @click="search(text)">crawl</button>
+        </div>
+
+        
+        <div class="map">       
+            Site Map     
+            <li class="box" v-for="item in items">
+                PAGE: {{ item.page }} 
+                <li v-for="img in item.imageLinks">
+                    IMAGE: {{img}}   
+                </li>
+                <button @click="searchChildren(item)">crawl</button>
+            </li>
+        </div>
+
+      `
+    }).mount('#content')
+  </script>
+</html>

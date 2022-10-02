@@ -1,0 +1,21 @@
+{
+  "name": "brownrecluse",
+  "version": "1.0.0",
+  "description": "webcrawling-app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Timi Ogunkeye",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "cheerio": "^1.0.0-rc.12",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "http-server": "^14.1.1",
+    "node-fetch": "^2.6.7",
+    "parse-url": "^8.1.0"
+  }
+}
