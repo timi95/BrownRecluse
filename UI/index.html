@@ -22,7 +22,6 @@
 <script>
 
     const ref = Vue.ref
-
     function useFetch(para) {
         const data = ref(null)
         const error = ref(null)
@@ -44,7 +43,6 @@
         }},
         methods: {
             async search(para){
-                // const { data, error } = useFetch(para)
                 const data = await fetch(`http://localhost:3000/crawl?url=${para}`)
                 .then((res) => res.json())
                 .then((json) => json)
@@ -54,13 +52,13 @@
                     console.log( data.siteMap ) 
                 } else { console.error(error) }
             },
-            async searchChildren(item){
+            async searchChildren(item, index){
                 const data = await fetch(`http://localhost:3000/crawl?url=${item.page}`)
                 .then((res) => res.json())
                 .then((json) => json)
 
                 if(!!data) {
-                    this.items.push(data.siteMap)
+                    this.items.splice(index, 0, data.siteMap)
                     console.log( data.siteMap ) 
                 } else { console.error(error) }
             },
@@ -78,12 +76,12 @@
         
         <div class="map">       
             Site Map     
-            <li class="box" v-for="item in items">
-                PAGE: {{ item.page }} 
+            <li class="box" v-for="(item, index) in items">
+                PAGE ({{index+1}}): {{ item.page }} 
                 <li v-for="img in item.imageLinks">
                     IMAGE: {{img}}   
                 </li>
-                <button @click="searchChildren(item)">crawl</button>
+                <button @click="searchChildren(item, index)">crawl</button>
             </li>
         </div>
 
