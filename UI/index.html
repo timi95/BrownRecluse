@@ -58,7 +58,7 @@
                 .then((json) => json)
 
                 if(!!data) {
-                    this.items.splice(index, 0, data.siteMap)
+                    this.items.splice(index, 0, ...data.siteMap)
                     console.log( data.siteMap ) 
                 } else { console.error(error) }
             },
